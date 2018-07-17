@@ -5,6 +5,36 @@ from datastruct import User
 from collections import namedtuple
 from collections import ChainMap
 
+class Foo(object):
+    def __init__(self,arg):
+        self.name = arg;
+    def getname(self):
+        return self.name
+    def __eq__(self, other):
+        if self.name == other.name:
+            return True
+        else:
+            return False
+
+    def __le__(self, other):
+        if self.name < other.name:
+            return True
+        else:
+            return False
+
+f__obj = Foo(40)
+f__obj2 = Foo(5)
+
+print('type:',f__obj == f__obj2);
+print('type:',f__obj <= f__obj2);
+
+print('type:',dir(f__obj));
+
+a = list(range(20))
+part1_slice = slice(1,17,2)
+part2_slice = slice(1,7,2)
+print("slice object demo:",a[part1_slice])
+
 'calculation on the dictionary values'
 
 price = {
@@ -221,3 +251,7 @@ print("merged dictionary:",merged_dict)
 
 # this required you to completely make separate dictionary object. Therefore, if any of the original dict changes, that will
 # not be reflected in the new merged dict. ChainMap uses original dict, thats why it does not have this behaviour
+
+bin_list = [1,1,1,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1]
+counter_list = [len(list(i for i in bin_list if i == 1)),len(list(j for j in bin_list if j==0))];
+print(counter_list)
