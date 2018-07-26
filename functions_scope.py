@@ -80,3 +80,39 @@ while True:
     print(v)
     if not v: break
 
+
+'''Decorators is a function whose primary purpose is t wrap another function or class'''
+
+enable_tracing = True
+if enable_tracing:
+    debug_log = open("debug.log",'w')
+
+def trace(func):
+    if enable_tracing:
+        def callf(*args,**kwargs):
+            debug_log.write("Calling %s: %s, %s \n" % (func.__name__,args,kwargs))
+            r = func(*args,**kwargs)
+            debug_log.write(" %s returned %s \n" % (func.__name__,r))
+            return r
+        return callf
+    else:
+        return func
+
+@trace
+def square(x):
+    return x*x
+
+print(square(5))
+
+
+'''Generators and yield: If a function uses the "yield" keyword, it defines the object known as generator
+A generator is a function which uses a sequence of values for use in iteration'''
+def countdown_2(n):
+    print("Counting down from: %d" % n)
+    while n > 0:
+        yield n
+        n -= 1
+
+print(countdown_2(5).__next__())
+
+
