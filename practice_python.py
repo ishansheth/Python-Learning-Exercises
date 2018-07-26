@@ -121,7 +121,60 @@ print((dict_to_json))
 
 'keeping an order in the dictionary-------------------------------------end'
 
+'''Methods in pythona and parameter passing'''
+
+'''default parmeter values are always set to the objects that were supplied as values when the function was defined'''
+a = 10;
+def foo(x=a,item=[]):
+    item.append(x)
+    return item
+
+a = 5;
+print(foo()) # default value is not changed
 
 
+'''in addition, the use of mutable objects as default values may lead to unintended behavior'''
+
+print(foo(1))
+print(foo(2))
+print(foo(3))
+
+'''this will retain the modifications made from previous calls'''
+def better_foo(x,items=None):
+    if items is None:
+        items = []
+    items.append(x);
+    return items
+
+print(better_foo(1))
+print(better_foo(2))
+print(better_foo(3))
+
+
+'''a function can accept a variable number of arguments/parameters if aestrik is added to the last parameter
+the value of aestrik is the tuple containing all the remaining paramters after the essential parameter value.
+One can use it in the string formatter or just access as if tuple was passed
+'''
+
+def fprintf(x,*args):
+    print("In frpintf:",args)
+    print(len(args))
+    print(x % args)
+
+fprintf("%d %s %f",42,'ishan',3.42)
+
+
+
+'''keywork argument invocation. The order does not matter in the case of keyword argument
+with keyword argument, the order of parameters does not matter. 
+But if they are not default values, you have to specify the name of all the required function parameter
+'''
+
+def foo(w,x,y,z):
+    print(w,x,y,z)
+
+foo(w='ishan',z=[1,2],y = 42, x = 'no')
+
+# foo('ishan',[1,2],w = 42, z = 'no') this is error because this is interpreted as "Multiple values of w"
 
 
