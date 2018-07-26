@@ -1,5 +1,6 @@
 
 '''scoping rules in the functions in python'''
+import foo as methods
 
 a = 42
 b = 10
@@ -38,3 +39,44 @@ print("a",a)
 
 
 '''function as objects and closures'''
+x = 4321
+
+def helloworld():
+    return "hello world, val of x:%d" % x
+
+'''n the above case, the helloworld function uses the value of x that is defined in the same environment as where helloworld
+function is defined. Although variable 'x' with same name is define in the module where this function is being called, #
+that is not used. When the statements that make up a functions are packaged together with the environment in which they execute, the 
+resulting object is known as closure 
+'''
+
+print(methods.callf(helloworld))
+print(helloworld.__globals__)   # in this one can see the
+
+'''when nested functions are used, closure capture the entire environment needed for the inner function to execute'''
+
+def bar():
+    x = 13;
+    def helloworld():
+        return "hello world, val of x:%d" % x
+
+    print(methods.callf(helloworld))
+
+bar()
+
+'''closure is highly effective way to  preserve state across a series of function calls'''
+def countdown_1(start):
+    def next():
+        nonlocal start
+        r = start
+        start -= 1
+        return r
+    return next
+
+
+next = countdown_1(10)
+while True:
+    v = next()
+    print(v)
+    if not v: break
+
