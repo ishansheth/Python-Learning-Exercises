@@ -113,6 +113,98 @@ def countdown_2(n):
         yield n
         n -= 1
 
-print(countdown_2(5).__next__())
+#print(countdown_2(5).__next__())
+for n in countdown_2(10):
+    print(n)
+    if n == 4:
+        break
+
+
+'''coroutine'''
+def receiver():
+    print("Ready to receive")
+    while True:
+        n = (yield)
+        print("Got %s" % n)
+
+r = receiver()
+r.__next__()
+r.send(1)
+r.send(2)
+r.send('hello')
+
+'''in the above coroutine, the calling of __next__ is necessary and it can be easily overlooked, for that one can write
+a decorator'''
+def coroutine(func):
+    def start(*args,**kwargs):
+        g = func(*args,**kwargs)
+        g.__next__()
+        return g
+    return start
+
+@coroutine
+def receiver_1():
+    print("Ready to receive")
+    while True:
+        n = (yield)
+        print("Got %s" % n)
+
+#example use
+r1 = receiver_1()
+r1.send("helloooooo")
+
+'''coroutines will run indefinitely unless it is explicitly shut down or it exist on its own. To close the stream of input values, 
+use close()
+'''
+r1.close()
+## r1.send(4)   this will generate StopIteration exception
+
+'''close function raises GeneratorExit inside the coroutine'''
+
+@coroutine
+def receiver_2():
+    print("Ready to receive")
+    try:
+        while True:
+            n = (yield)
+            print("Got %s" % n)
+    except GeneratorExit:
+        print("Receiver Done")
+
+r2 = receiver_2()
+r2.send("python")
+r2.send("learning")
+r2.close()
+#r2.send("learning")     # this will throw an StopIteration exception
+
+
+'''coroutine can simultaneously receive and emit return values using yield if values are supplied in the yield expression'''
+
+def line_splitter(delimiter = None):
+    print("ready to split")
+    result = None
+    while True:
+        print("here")
+        line = (yield result)
+        print("received:",line,result)
+        result = line.split(delimiter)  # in this case, coroutine yields the same result as before, but now send() also produces results
+
+'''the first next() call advances the coroutine to (yield result), which returns None, the initial value of result.
+On the next send() call, the received value is placed in line, and split into result. The value returned by 
+send() is the value passed to the next yield statement. In other words, the value returned by send() comes from the next
+yield statement , not the one responsible for receiving the value passed by send()
+'''
+print("--------------------------------------------------------------------------------------------------------------")
+s = line_splitter(",")
+print("calling next")
+s.__next__()
+print("send()")
+print(s.send("A,B,C"))
+print("send()")
+print(s.send("A1,B2,C3"))
+
+
+
+
 
 
