@@ -1,4 +1,6 @@
 import random
+from datetime import datetime
+import math
 
 class Account(object):
     num_accounts = 0    # this is not tied to any of the object and its value is shared among all the objects/instances of the class
@@ -69,5 +71,90 @@ class MoreEvilAccount(EvilAccount):
 ex = MoreEvilAccount("heyo",100)
 ex.deposit(1)
 print(ex.inquiry())
+
+'''static methods in the class can be defined using the decorator @staticmethod. It is an ordinary method which just happens to live inside the class namespace
+A common use of the static method is in writing a class where you have many ways to create instances. Because you can not write more than one __init__() methods
+for all those ways. In C++ you can define more than one ctor with dfferent arguments. Here its not possible So use static methods'''
+
+class Date(object):
+    def __init__(self,year,month,day):
+        self.day = day
+        self.month = month
+        self.year = year
+
+    @staticmethod
+    def now():
+        t = datetime.now()
+        return Date(t.year,t.month,t.day)
+
+    @staticmethod
+    def tomorrow():
+        t = datetime.now()
+        return Date(t.year,t.month,t.day+1)
+
+a_date = Date(1,10,100)
+print(a_date.day,a_date.month,a_date.year)
+
+a_date_now = Date.now()
+print(a_date_now.day,a_date_now.month,a_date_now.year)
+
+'''class methods are methods that operate on the class itself as an object. This can be defined using the @classmethod decorator'''
+
+class Times(object):
+    factor =1
+    @classmethod
+    def mul(cls,x):
+        return cls.factor*x
+
+class TwoTimes(Times):
+    factor = 2
+
+x = TwoTimes.mul(5)     # calls Times.mul(TwoTimes,5) -> 10 will be the answer
+print(x)
+
+
+class EuroDate(Date):
+    def __str__(self):
+        return "%02d/%02d/%04d" % (self.day,self.month,self.year)
+
+
+euDate = EuroDate.now()
+print(euDate)
+
+# Because the class inherits from Date, it has all the same features. However, now() and tomorrow() will still return Date object instead of EuroDate object
+# A classmethod can fix this
+'''
+class Date(object):
+    ...
+    @classmethod
+    def now(cls):
+        t = datetime.now()
+        return cls(t.year,t.month,t.day)
+        
+class EuroDate(Date):
+    ...
+
+a = Date.now()  -> returns Date object
+b = EuroDate.now() -> returns EuroDate object
+
+'''
+
+
+'''
+Properties
+A property is a special kind of attribute that computes its value when accessed 
+'''
+
+class Circle(object):
+    def __init__(self,radius):
+        self.radius = radius
+
+    @property
+    def area(self):
+        return math.pi*self.radius**2
+
+    @property
+    def perimeter(self):
+        return 2*math.pi*self.radius
 
 
