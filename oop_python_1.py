@@ -158,3 +158,75 @@ class Circle(object):
         return 2*math.pi*self.radius
 
 
+c1 = Circle(4)
+print("Radius:",c1.radius,"area:",c1.area,"perimeter:",c1.perimeter)
+c1.radius = 6
+# c1.area = 50 This will give error becase attribute can not be set. This is where the use of the object can get to know that its not a simple attribute of the class
+# but a property and it can not be set
+
+# properties can also intercept the operation of setting value and delete an attribute as shown below
+
+class Square(object):
+    def __init__(self,length):
+        self.__sidelength = length
+
+    @property
+    def sidelength(self):
+        return self.__sidelength
+
+    @sidelength.setter
+    def sidelength(self,value):
+        if not isinstance(value,float):
+            raise TypeError("Must be a float")
+        self.__sidelength = value
+
+    @sidelength.deleter
+    def sidelength(self):
+        raise TypeError("Cant delete the side length of square")
+
+
+sq1 = Square(3)
+print("Side length of square:",sq1.sidelength)
+sq1.sidelength = 4.4    # any other value e.g. 4 will give an error
+print("Side length of square:",sq1.sidelength)
+
+# del sq1.sidelength will generate an error
+'''in the above example, the name is defined as read only property using @property decorator and associated method. The @sidelength.setter and @sidelngth.deleter
+decorators that follow are associating additional methods with set and deletion operations on the sidelength attribute
+'''
+
+
+
+'''With properties access to an attribute is controlled by a series of user-defined get,set and delete function. 
+This sort of attribute can be generalized through the use of descriptor object.
+'''
+class TypedProperty(object):
+    def __init__(self,name,type,default = None):
+        self.name = "_" + name
+        self.type = type
+        self.default = default if default else type()
+
+    def __get__(self,instance,cls):
+        return getattr(instance,self.name,self.default)
+
+    def __set__(self, instance, value):
+        if not isinstance(value,self.type):
+            raise TypeError("Must be %s" % self.type)
+        setattr(instance,self.name,value)
+
+    def __delete__(self,instance):
+        raise AttributeError("Cant delete attribute")
+
+
+class Mydata(object):
+    name = TypedProperty("name",str)
+    num = TypedProperty("num",int,42)
+
+data1 = Mydata()
+data1.name = "Ishan"
+print("MyData:",data1.name,"Num:",data1.num)
+
+# del data1.name This will give error from __delete__
+'''Descriptors can only be allowed at class level. It is not legal to create descriptors per instance basis by creating descriptor object inside __init__ method
+
+'''

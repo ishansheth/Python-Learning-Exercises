@@ -245,6 +245,7 @@ print("length of chainmap",len(c),"\n key and values",list(c.keys()),list(c.valu
 dict_a = {'x':1,'z':3}
 dict_b = {'y':2,'z':4}
 
+
 merged_dict = dict(dict_b)
 merged_dict.update(dict_a)
 print("merged dictionary:",merged_dict)
