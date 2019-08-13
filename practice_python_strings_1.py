@@ -1,4 +1,7 @@
-'''suppose you want to split the string into fields and then put them into the list. But the delimiters are not consistent
+'''
+The examples below are taken from python cookbook
+
+suppose you want to split the string into fields and then put them into the list. But the delimiters are not consistent
 The split method is used for simple cases and can not be used for this complicated processing. In this case use re
 '''
 
