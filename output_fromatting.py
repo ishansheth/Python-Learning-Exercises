@@ -48,7 +48,6 @@ class Person(object):
 
 p = Person('Ishan','Sheth',30)
 
-print(p)
 
 nameList = ['Harsh','Pratik','Bob','Dhruv']
 pos = 0
@@ -62,6 +61,7 @@ except:
 list1 = ['physics','chemistry',1997,2002]
 list2 = [1,2,3,4,5,6,7]
 
+#printing the list in reversed order
 for i in list1[::-1]:
     print(i)
 
