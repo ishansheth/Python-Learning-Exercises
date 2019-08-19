@@ -145,11 +145,7 @@ L1 = [x**2 for x in reversed(range(10))].pop()
 L1 += 16
 print(sqrt(L1))
 
-
-
 #---------------------Type Conversion----------------------------------
-
-
 s = "10010"
 c = int(s,2)
 print("After converting binary string to integer base 2:",c)
@@ -189,7 +185,7 @@ print("After convering integers to string:",c)
 c = dict(tup)
 print("After convering list to dict:",c)
 
-
+#------------------------------------------------------------------------------------
 D = dict()
 for x in enumerate(range(2)):
     D[x[0]] = x[1]
