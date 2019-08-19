@@ -189,3 +189,29 @@ print("After convering integers to string:",c)
 c = dict(tup)
 print("After convering list to dict:",c)
 
+
+D = dict()
+for x in enumerate(range(2)):
+    D[x[0]] = x[1]
+    D[x[1] + 7] = x[0]
+print(D)
+# empty the directory
+D.clear()
+
+for i in range(3):
+    for j in range(2):
+        # i = 0, j = 0,1->D[0] = 1
+        # i = 1, j = 0,1->D[1] = 1
+        # i = 2, j = 0,1->D[2] = 1
+        D[i] = j
+print(D)
+# empty the directory
+D.clear()
+
+D = {1:[1,2,3] , 2:(4,6,8)}
+D[1].append(4)
+print(D[1])
+L = list(D[2])
+L.append(10)
+D[2] = tuple(L)
+print(D[2])
